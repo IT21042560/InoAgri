@@ -19,6 +19,7 @@ import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
 import leaf_disease
 from recommender import recommender  # Import your recommender class
+import pickle
 
 app = Flask(__name__)
 CORS(app)
@@ -30,6 +31,11 @@ regression_model_path = 'models/regression_model.pkl'
 classification_model_path = 'models/classification_model.pkl'
 regression_model = joblib.load(regression_model_path)
 classification_model = joblib.load(classification_model_path)
+
+harvest_model_path = './Actual_harvest_predictor.pickle'
+
+with open(harvest_model_path, 'rb') as model_file:
+    harvest_model = pickle.load(model_file)
 
 # Load and preprocess the dataset (you might want to adjust this based on your use case)
 def load_dataset(path):
@@ -514,6 +520,48 @@ def predict_leaf_disease():
     }
 
     return jsonify(response)
+
+# ? Predict the Actual harvest value
+@app.route('/harvest/predict', methods = ['POST'])
+def predict_harvest():
+    data = request.json
+
+    # Extract features from the input data
+    features = [
+        data['pH'],
+        data['Acerage'],
+        data['Ca'], 
+        data['Mg'], 
+        data['K'], 
+        data['N'], 
+        data['P'], 
+        data['Zn'], 
+        data['Urea'], 
+        data['TSP'], 
+        data['MOP'], 
+        data['CaNO3'], 
+        data['Rainfall'], 
+        data['Temperature'], 
+        data['Expected Harvest'],
+    ]
+
+    # Convert features to the required format 
+    features_array = np.array([features])
+    
+    # Make a prediction using the Random Forest model
+    predicted_harvest = harvest_model.predict(features_array)
+
+    # Save the data and the predicted results to MongoDB
+    mongo.db.harvest_predictions.insert_one({
+        'input_data': data,
+        'predicted_harvest': predicted_harvest[0],
+        'prediction_date': str(date.today())
+    })
+    
+    # Return the predicted value as a response
+    return jsonify({
+        'predicted_harvest': predicted_harvest[0]
+    })
    
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
