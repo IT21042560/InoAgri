@@ -19,6 +19,7 @@ import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
 import leaf_disease
 from recommender import recommender  # Import your recommender class
+from pest_recommender import pest_recommender  # Import your recommender class
 import pickle
 
 app = Flask(__name__)
@@ -150,6 +151,13 @@ def mytest():
     if predicted_class == "Apids":
         predicted_class = "Aphids"
 
+     # Create an instance of your recommender class
+    recommender_instance = pest_recommender()
+    # print(yolo_prediction)
+    # Get recommendations
+    recommendations = recommender_instance.getRecommendations(yolo_prediction)
+
+
     inception_prediction = {
         'predicted_class': predicted_class,
         'probability': probability
@@ -158,14 +166,15 @@ def mytest():
     response = {
         'yolo_prediction': yolo_prediction,
         'inception_prediction': inception_prediction,
-        'image_name': file.filename
+        'image_name': file.filename,
+        'recommendations':recommendations
     }
 
     if predicted_class == class_id:
         response['message'] = True
     else:
         response['message'] = False
-    print(response)
+    # print(response)
     return jsonify(response)
 
 
@@ -521,47 +530,97 @@ def predict_leaf_disease():
 
     return jsonify(response)
 
-# ? Predict the Actual harvest value
-@app.route('/harvest/predict', methods = ['POST'])
-def predict_harvest():
+
+@app.route("/pest/ai", methods=['POST'])
+def pest_ai_recommender():
+    # Fetch the image and additional data
     data = request.json
+    pest_name = data.get('pest_name')
+    # Create an instance of your recommender class
+    recommender_instance = pest_recommender()
 
-    # Extract features from the input data
-    features = [
-        data['pH'],
-        data['Acerage'],
-        data['Ca'], 
-        data['Mg'], 
-        data['K'], 
-        data['N'], 
-        data['P'], 
-        data['Zn'], 
-        data['Urea'], 
-        data['TSP'], 
-        data['MOP'], 
-        data['CaNO3'], 
-        data['Rainfall'], 
-        data['Temperature'], 
-        data['Expected Harvest'],
-    ]
+    # Get recommendations
+    recommendations = recommender_instance.getRecommendations(pest_name)
 
-    # Convert features to the required format 
-    features_array = np.array([features])
-    
-    # Make a prediction using the Random Forest model
-    predicted_harvest = harvest_model.predict(features_array)
+    # Return the results
+    response = {
+        'recommendations': recommendations
+    }
 
-    # Save the data and the predicted results to MongoDB
-    mongo.db.harvest_predictions.insert_one({
-        'input_data': data,
-        'predicted_harvest': predicted_harvest[0],
-        'prediction_date': str(date.today())
-    })
-    
-    # Return the predicted value as a response
-    return jsonify({
-        'predicted_harvest': predicted_harvest[0]
-    })
-   
+    return jsonify(response)
+
+@app.route('/submitData', methods=['POST'])
+def submit_form():
+    try:
+        # Get form data from request
+        data = request.json
+        print("Received Data:", data)
+        harvest = mongo.db.harvest
+        
+        # Insert data into MongoDB
+        harvest.insert_one(data)
+        
+        return jsonify({"message": "Data submitted successfully"}), 201
+    except Exception as e:
+        print(e)
+        return jsonify({"message": "Failed to submit data"}), 500
+
+
+
+@app.route('/harvest/predict', methods=['POST'])
+def predict_harvest():
+    try:
+        data = request.json
+        print(data)
+        # Validate the required fields in the input data
+        required_fields = ['pH', 'Acerage', 'Ca', 'Mg', 'K', 'N', 'P', 'Zn', 'Urea', 'TSP', 'MOP', 'CaNO3', 'Rainfall', 'Temperature', 'Expected Harvest']
+        if not all(field in data for field in required_fields):
+            return jsonify({"message": "Missing required fields"}), 400
+        
+        harvest = mongo.db.harvest_predictions
+
+        # Extract and validate features from the input data
+        try:
+            features = [
+                float(data['pH']),
+                float(data['Acerage']),
+                float(data['Ca']),
+                float(data['Mg']),
+                float(data['K']),
+                float(data['N']),
+                float(data['P']),
+                float(data['Zn']),
+                float(data['Urea']),
+                float(data['TSP']),
+                float(data['MOP']),
+                float(data['CaNO3']),
+                float(data['Rainfall']),
+                float(data['Temperature']),
+                float(data['Expected Harvest']),
+            ]
+        except ValueError as e:
+            return jsonify({"message": "Invalid data types for features", "error": str(e)}), 400
+
+        # Convert features to the required format 
+        features_array = np.array([features])
+
+        # Make a prediction using the Random Forest model
+        predicted_harvest = harvest_model.predict(features_array)
+
+        # Save the data and the predicted results to MongoDB
+        harvest.insert_one({
+            'input_data': data,
+            'predicted_harvest': float(predicted_harvest[0]),
+            'prediction_date': str(date.today())
+        })
+
+        # Return the predicted value as a response
+        return jsonify({
+            'predicted_harvest': float(predicted_harvest[0])
+        })
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"message": "Failed to predict harvest", "error": str(e)}), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

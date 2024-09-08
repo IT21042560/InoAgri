@@ -9,11 +9,6 @@ import { AuthContext } from "./src/Context/AuthContext";
 import Home from "./src/Screen/Home/Home";
 import PestDashboard from "./src/PestControll/PestDashboard";
 import DiseasesDashboard from "./src/DiseasesControl/DiseasesDashboard";
-import FeritilizerDashboard from "./src/FertilizerPredict/FeritilizerDashboard";
-import CultivationDetails from "./src/FertilizerPredict/CultivationDetails";
-import SoilDetails from "./src/FertilizerPredict/SoilDetails";
-import CostDashboard from "./src/CostPredict/CostDashboard";
-import CostData from "./src/CostPredict/CostData";
 import OpenCamara from "./src/PestControll/OpenCamara";
 import PestAnswer from "./src/PestControll/PestAnswer";
 import AddChemicals from "./src/PestControll/admin/AddChemicals";
@@ -25,6 +20,12 @@ import Reject from "./src/DiseasesControl/Reject";
 import Solutions from "./src/DiseasesControl/Solutions";
 import TranslateToSinhala from "./src/DiseasesControl/TranslateToSinhala";
 import GetDisease from "./src/DiseasesControl/GetDisease";
+import CostDashboard from "./src/CostPrediction/CostDashboard";
+import ARIndex from "./src/PestControll/ar/Index";
+import HarvestDashboard from "./src/HarvestPredict/HarvestDashboard";
+import PredictHarvest from "./src/HarvestPredict/PredictHarvest";
+import NextButton from "./src/HarvestPredict/NextButton";
+import ActualPrediction from "./src/HarvestPredict/ActualPrediction";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,39 +35,47 @@ export default function AppNav() {
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <ActivityIndicator size={"large"} />
-    </View>
-    )
+        <ActivityIndicator size={"large"} />
+      </View>
+    );
   }
 
   return (
     <NavigationContainer>
       {userToken !== null ? (
-        <Stack.Navigator screenOptions={{ headerShown: false }}> 
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="PestDashboard" component={PestDashboard} />
-        <Stack.Screen name="FertilizerDashboard" component={FeritilizerDashboard} />
-        <Stack.Screen name="CultivationDetails" component={CultivationDetails} />
-        <Stack.Screen name="SoilDetails" component={SoilDetails} /> 
-        <Stack.Screen name="CostDashboard" component={CostDashboard} /> 
-        <Stack.Screen name="CostData" component={CostData} /> 
-        <Stack.Screen name="OpenPestCamara" component={OpenCamara} /> 
-        <Stack.Screen name="PestAnswer" component={PestAnswer} /> 
-        <Stack.Screen name="AddChemical" component={AddChemicals} /> 
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="PestDashboard" component={PestDashboard} />
+          <Stack.Screen name="OpenPestCamara" component={OpenCamara} />
+          <Stack.Screen name="PestAnswer" component={PestAnswer} />
+          <Stack.Screen name="AddChemical" component={AddChemicals} />
+          <Stack.Screen name="AR" component={ARIndex} />
 
-        {/* Thilina */}
-        <Stack.Screen name="AddCost" component={AddCost} /> 
-        <Stack.Screen name="PredictedCost" component={PredictedCost} />
+          {/* Thilina */}
+          <Stack.Screen name="AddCost" component={AddCost} />
+          <Stack.Screen name="PredictedCost" component={PredictedCost} />
+          <Stack.Screen name="CostDashboard" component={CostDashboard} />
 
-        {/* Disease Control */}
-        <Stack.Screen name="DiseasesDashboard" component={DiseasesDashboard} />
-        <Stack.Screen name="PredictLeaf" component={PredictLeaf} />
-        <Stack.Screen name="Result" component={Result} />
-        <Stack.Screen name="Reject" component={Reject} />
-        <Stack.Screen name="Solutions" component={Solutions} />
-        <Stack.Screen name="TranslateToSinhala" component={TranslateToSinhala} /> 
-        <Stack.Screen name="GetDisease" component={GetDisease} /> 
+          {/* Disease Control */}
+          <Stack.Screen
+            name="DiseasesDashboard"
+            component={DiseasesDashboard}
+          />
+          <Stack.Screen name="PredictLeaf" component={PredictLeaf} />
+          <Stack.Screen name="Result" component={Result} />
+          <Stack.Screen name="Reject" component={Reject} />
+          <Stack.Screen name="Solutions" component={Solutions} />
+          <Stack.Screen
+            name="TranslateToSinhala"
+            component={TranslateToSinhala}
+          />
+          <Stack.Screen name="GetDisease" component={GetDisease} />
 
+          {/* amalya */}
+          <Stack.Screen name="HarvestDashboard" component={HarvestDashboard} />
+          <Stack.Screen name="PredictHarvest" component={PredictHarvest} />
+          <Stack.Screen name="NextButton" component={NextButton} />
+          <Stack.Screen name="ActualPrediction" component={ActualPrediction} />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator screenOptions={{ headerShown: false }}>

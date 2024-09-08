@@ -15,6 +15,7 @@ import Header from "../Screen/Header/Index";
 import Footer from "../Screen/Footer/Index";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
 export default function OpenCamara(props) {
   const [facing, setFacing] = useState("back");

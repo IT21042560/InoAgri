@@ -45,7 +45,7 @@ export default function Result(props) {
       name: "photo.jpg",
       type: "image/jpeg",
     });
-    formData.append("disease_name", "downy mildew");
+    formData.append("disease_name", answer);
     formData.append("temperature", temperature);
     formData.append("humidity", humidity);
 

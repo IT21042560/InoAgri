@@ -29,7 +29,7 @@ export default function Footer() {
           style={{ paddingRight: 5 }}
         />
       </TouchableOpacity>
-
+      
       <TouchableOpacity onPress={() => navigation.navigate("DiseasesDashboard")}>
       <FontAwesome
         name="leaf"
@@ -38,8 +38,8 @@ export default function Footer() {
         style={{ marginLeft: "auto", paddingRight: 5 }}
       />
       </TouchableOpacity>
-
-      <TouchableOpacity >
+      
+      <TouchableOpacity onPress={() => navigation.navigate("HarvestDashboard")}>
       <FontAwesome
         name="pagelines"
         size={25}
@@ -48,7 +48,7 @@ export default function Footer() {
       />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("AddCost")}>
+      <TouchableOpacity onPress={() => navigation.navigate("CostDashboard")}>
       <FontAwesome
         name="dollar"
         size={25}

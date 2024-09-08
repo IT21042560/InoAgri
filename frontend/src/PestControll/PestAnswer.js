@@ -7,6 +7,7 @@ import {
   Image,
   Button,
   ActivityIndicator,
+  Linking,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
@@ -47,6 +48,63 @@ export default function PestAnswer() {
 
   const [chemical, setChemical] = useState([]);
   const navigation = useNavigation();
+
+  let answerGemini = data.res.recommendations.replace(/\*/g, "");
+  answerGemini = answerGemini.replace(/\s{2,}/g, " ");
+  // Breaking into two paragraphs after "Best Practices to Prevent Mite Infestations"
+  // Find all periods (.) in the text and their indexes
+  const periodIndexes = [...answerGemini.matchAll(/\./g)].map(
+    (match) => match.index
+  );
+
+  // Check if there are any periods found
+  if (periodIndexes.length > 0) {
+    // Calculate the middle index of the text
+    const middleIndex = Math.floor(answerGemini.length / 2);
+
+    // Find the period closest to the middle of the text
+    const closestPeriodIndex = periodIndexes.reduce((prev, curr) => {
+      return Math.abs(curr - middleIndex) < Math.abs(prev - middleIndex)
+        ? curr
+        : prev;
+    });
+
+    // Split the text at the closest period index and add a line break
+    answerGemini =
+      answerGemini.slice(0, closestPeriodIndex + 1) +
+      "\n\n" +
+      answerGemini.slice(closestPeriodIndex + 1);
+  }
+
+
+  const openGitHubPage = (obj) => {
+    if (obj == "Aphids") {
+      const url = "https://it21042560.github.io/AR16/"; // Replace with your GitHub Pages URL
+      Linking.openURL(url).catch((err) =>
+        console.error("Couldn't load page", err)
+      );
+    } else if (obj == "Thrips") {
+      const url = "https://it21042560.github.io/AR13/"; // Replace with your GitHub Pages URL
+      Linking.openURL(url).catch((err) =>
+        console.error("Couldn't load page", err)
+      );
+    } else if (obj == "Catepillars") {
+      const url = "https://it21042560.github.io/AR11/"; // Replace with your GitHub Pages URL
+      Linking.openURL(url).catch((err) =>
+        console.error("Couldn't load page", err)
+      );
+    } else if (obj == "Mites") {
+      const url = "https://it21042560.github.io/AR14/"; // Replace with your GitHub Pages URL
+      Linking.openURL(url).catch((err) =>
+        console.error("Couldn't load page", err)
+      );
+    } else if (obj == "whiteflies") {
+      const url = "https://it21042560.github.io/AR15/"; // Replace with your GitHub Pages URL
+      Linking.openURL(url).catch((err) =>
+        console.error("Couldn't load page", err)
+      );
+    }
+  };
 
   useEffect(() => {
     if (
@@ -288,7 +346,7 @@ export default function PestAnswer() {
                   paddingTop: 10,
                 }}
               >
-                <Text style={{color:'red', fontSize:15}}>
+                <Text style={{ color: "red", fontSize: 15 }}>
                   Incorrect or does not match the input image due to low
                   quality.
                 </Text>
@@ -302,7 +360,7 @@ export default function PestAnswer() {
             )}
 
             {showButton == false ? (
-              <View style={{ paddingBottom: 100 }}>
+              <View style={{ paddingBottom: 20, paddingTop: 20 }}>
                 <View>
                   <Text style={styles.subHedding}>
                     Chemicals for avoid {pest_names}
@@ -334,6 +392,102 @@ export default function PestAnswer() {
                       />
                     </View>
                   ))}
+                </View>
+
+                <View style={{ paddingBottom: 10, paddingTop: 60 }}>
+                  <View>
+                    <View
+                      style={{
+                        height: "auto",
+                        alignSelf: "center",
+                        width: "80%",
+                        paddingTop: 10,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <FontAwesome
+                        name="cogs"
+                        size={30}
+                        color={"#33705b"}
+                        style={{
+                          padding: 10,
+                        }}
+                      />
+
+                      <Text style={styles.subHedding1}>
+                        AI Generator Answer for {pest_names}
+                      </Text>
+
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          textAlign: "justify",
+                          letterSpacing: -0.5,
+                          paddingVertical: 10,
+                        }}
+                      >
+                        {answerGemini}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+
+                <View style={{ paddingBottom: 60 }}>
+                  <View
+                    style={{
+                      height: "auto",
+                      width: "90%",
+                      alignSelf: "center",
+                    }}
+                  >
+                    <View
+                      style={{
+                        height: "auto",
+                        alignSelf: "center",
+                        width: "90%",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <FontAwesome
+                        name="cube"
+                        size={30}
+                        color={"#33705b"}
+                        style={{
+                          padding: 10,
+                        }}
+                      />
+                      <Text style={styles.subHedding1}>
+                        AR view of {pest_names}
+                      </Text>
+
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          textAlign: "justify",
+                          letterSpacing: -0.5,
+                          paddingVertical: 10,
+                        }}
+                      >
+                        This immersive experience is designed to help you
+                        understand the pest's general characteristics and
+                        behavior better. Please note that this is a prototype
+                        view and may not display the actual textures or precise
+                        details of the pest. The AR model serves as a visual aid
+                        to provide a close representation, helping you get a
+                        better grasp of the pest's appearance and form.
+                      </Text>
+
+                      <View style={{ paddingTop: 20 }}>
+                        <Button
+                          title="Try AR"
+                          onPress={() => openGitHubPage(pest_names)}
+                          color={"#33705b"}
+                        />
+                      </View>
+                    </View>
+                  </View>
                 </View>
               </View>
             ) : null}
