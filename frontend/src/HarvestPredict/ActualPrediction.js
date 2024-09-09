@@ -105,218 +105,223 @@ export default function ActualPrediction(props) {
 
   return (
     <View style={styles.mainContainer}>
-      <Header />
-      <View style={{ paddingBottom: 130 }}>
-        <ScrollView>
-          <Image
-            style={{ width: "100%", height: 180 }}
-            source={require("./assets/fertilizer1.jpeg")}
-          />
+    <Header />
+    <View style={{ paddingBottom: 130 }}>
+      <ScrollView>
+        <Image
+          style={{ width: "100%", height: 180 }}
+          source={require("./assets/fertilizer1.jpeg")}
+        />
 
-          <View style={{ alignItems: "center" }}>
+        <View style={{ alignItems: "center" }}>
+          <Text
+            style={{
+              color: "black",
+              fontSize: 20,
+              fontWeight: "bold",
+              marginTop: 10,
+              marginBottom: 10,
+              letterSpacing: 1.5,
+            }}
+          >
+            Actual Harvest Prediction
+          </Text>
+          <Text
+            style={{
+              color: "black",
+              fontSize: 15,
+              letterSpacing: 2,
+            }}
+          >
+            Enter the details about the crop cultivation
+          </Text>
+
+          <View
+            style={{
+              backgroundColor: shadegreen,
+              height: 1800,
+              width: "100%",
+              borderTopRightRadius: 100,
+              paddingTop: 10,
+              //alignItems: "flex-start",
+              marginTop: 20,
+            }}
+          >
             <Text
               style={{
-                color: "black",
-                fontSize: 20,
-                fontWeight: "bold",
-                marginTop: 10,
-                marginBottom: 10,
-                letterSpacing: 1.5,
+                color: fontgreen,
+                fontSize: 18,
+                fontWeight: 900,
+                letterSpacing: 5,
+                paddingLeft: 10,
               }}
             >
-              Actual Harvest Prediction
-            </Text>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-                letterSpacing: 2,
-              }}
-            >
-              Enter the details about the crop cultivation
+              GHERKIN CULTIVATION DETAILS
             </Text>
 
             <View
               style={{
-                backgroundColor: shadegreen,
+                height: 700,
                 width: "100%",
                 borderTopRightRadius: 100,
-                paddingTop: 10,
-                //alignItems: "flex-start",
+                //paddingLeft:30,
+                //alignItems: "center",
                 marginTop: 20,
               }}
             >
-              <Text
-                style={{
-                  color: fontgreen,
-                  fontSize: 18,
-                  fontWeight: 900,
-                  letterSpacing: 5,
-                  paddingLeft: 10,
-                }}
-              >
-                GHERKIN CULTIVATION DETAILS
-              </Text>
+              <Text style={styles.subHeading}>pH value</Text>
 
-              <View
-                style={{
-                  width: "100%",
-                  borderTopRightRadius: 100,
-                  //paddingLeft:30,
-                  //alignItems: "center",
-                  marginTop: 20,
-                }}
-              >
-                <Text style={styles.subHeading}>pH value</Text>
+              <TextInput
+                style={styles.textbox}
+                placeholderTextColor="grey"
+                placeholder="pH value"
+                onChangeText={setpH}
+              ></TextInput>
 
-                <TextInput
-                  style={styles.textbox}
-                  placeholderTextColor="grey"
-                  placeholder="pH value"
-                  onChangeText={setpH}
-                ></TextInput>
+              <Text style={styles.subHeading}>Acerage</Text>
 
-                <Text style={styles.subHeading}>Acerage</Text>
+              <TextInput
+                style={styles.textbox}
+                placeholderTextColor="grey"
+                placeholder="Acerage"
+                onChangeText={setAcerage}
+              ></TextInput>
 
-                <TextInput
-                  style={styles.textbox}
-                  placeholderTextColor="grey"
-                  placeholder="Acerage"
-                  onChangeText={setAcerage}
-                ></TextInput>
+              <Text style={styles.subHeading}>Calcium (Ca)</Text>
 
-                <Text style={styles.subHeading}>Calcium (Ca)</Text>
+              <TextInput
+                style={styles.textbox}
+                placeholderTextColor="grey"
+                placeholder="Amount"
+                onChangeText={setValueCa}
+              ></TextInput>
 
-                <TextInput
-                  style={styles.textbox}
-                  placeholderTextColor="grey"
-                  placeholder="Amount"
-                  onChangeText={setValueCa}
-                ></TextInput>
+              <Text style={styles.subHeading}>Magnesium (Mg)</Text>
 
-                <Text style={styles.subHeading}>Magnesium (Mg)</Text>
+              <TextInput
+                style={styles.textbox}
+                placeholderTextColor="grey"
+                placeholder="Amount"
+                onChangeText={setValueMg}
+              ></TextInput>
 
-                <TextInput
-                  style={styles.textbox}
-                  placeholderTextColor="grey"
-                  placeholder="Amount"
-                  onChangeText={setValueMg}
-                ></TextInput>
+              <Text style={styles.subHeading}>Potassium (K)</Text>
 
-                <Text style={styles.subHeading}>Potassium (K)</Text>
+              <TextInput
+                style={styles.textbox}
+                placeholderTextColor="grey"
+                placeholder="Amount"
+                onChangeText={setValueK}
+              ></TextInput>
 
-                <TextInput
-                  style={styles.textbox}
-                  placeholderTextColor="grey"
-                  placeholder="Amount"
-                  onChangeText={setValueK}
-                ></TextInput>
+              <Text style={styles.subHeading}>Nitrogen (N)</Text>
 
-                <Text style={styles.subHeading}>Nitrogen (N)</Text>
+              <TextInput
+                style={styles.textbox}
+                placeholderTextColor="grey"
+                placeholder="Amount"
+                onChangeText={setValueN}
+              ></TextInput>
 
-                <TextInput
-                  style={styles.textbox}
-                  placeholderTextColor="grey"
-                  placeholder="Amount"
-                  onChangeText={setValueN}
-                ></TextInput>
+              <Text style={styles.subHeading}>Posporus (P)</Text>
 
-                <Text style={styles.subHeading}>Posporus (P)</Text>
+              <TextInput
+                style={styles.textbox}
+                placeholderTextColor="grey"
+                placeholder="Amount"
+                onChangeText={setValueP}
+              ></TextInput>
 
-                <TextInput
-                  style={styles.textbox}
-                  placeholderTextColor="grey"
-                  placeholder="Amount"
-                  onChangeText={setValueP}
-                ></TextInput>
+              <Text style={styles.subHeading}>Zinc (Zn)</Text>
 
-                <Text style={styles.subHeading}>Zinc (Zn)</Text>
+              <TextInput
+                style={styles.textbox}
+                placeholderTextColor="grey"
+                placeholder="Amount"
+                onChangeText={setValueZn}
+              ></TextInput>
 
-                <TextInput
-                  style={styles.textbox}
-                  placeholderTextColor="grey"
-                  placeholder="Amount"
-                  onChangeText={setValueZn}
-                ></TextInput>
+              <Text style={styles.subHeading}>Urea</Text>
 
-                <Text style={styles.subHeading}>Urea</Text>
+              <TextInput
+                style={styles.textbox}
+                placeholderTextColor="grey"
+                placeholder="per acre"
+                onChangeText={setValueUrea}
+              ></TextInput>
 
-                <TextInput
-                  style={styles.textbox}
-                  placeholderTextColor="grey"
-                  placeholder="per acre"
-                  onChangeText={setValueUrea}
-                ></TextInput>
+              <Text style={styles.subHeading}>TSP</Text>
 
-                <Text style={styles.subHeading}>TSP</Text>
+              <TextInput
+                style={styles.textbox}
+                placeholderTextColor="grey"
+                placeholder="per acre"
+                onChangeText={setValueTSP}
+              ></TextInput>
 
-                <TextInput
-                  style={styles.textbox}
-                  placeholderTextColor="grey"
-                  placeholder="per acre"
-                  onChangeText={setValueTSP}
-                ></TextInput>
+              <Text style={styles.subHeading}>MOP</Text>
 
-                <Text style={styles.subHeading}>MOP</Text>
+              <TextInput
+                style={styles.textbox}
+                placeholderTextColor="grey"
+                placeholder="per acre"
+                onChangeText={setValueMOP}
+              ></TextInput>
 
-                <TextInput
-                  style={styles.textbox}
-                  placeholderTextColor="grey"
-                  placeholder="per acre"
-                  onChangeText={setValueMOP}
-                ></TextInput>
+              <Text style={styles.subHeading}>CaNO3</Text>
 
-                <Text style={styles.subHeading}>CaNO3</Text>
+              <TextInput
+                style={styles.textbox}
+                placeholderTextColor="grey"
+                placeholder="per acre"
+                onChangeText={setValueCaNO3}
+              ></TextInput>
 
-                <TextInput
-                  style={styles.textbox}
-                  placeholderTextColor="grey"
-                  placeholder="per acre"
-                  onChangeText={setValueCaNO3}
-                ></TextInput>
+              <Text style={styles.subHeading}>Expected Rainfall</Text>
 
-                <Text style={styles.subHeading}>Expected Rainfall</Text>
+              <TextInput
+                style={styles.textbox}
+                placeholderTextColor="grey"
+                placeholder="Rainfall"
+                onChangeText={setRainfall}
+              ></TextInput>
 
-                <TextInput
-                  style={styles.textbox}
-                  placeholderTextColor="grey"
-                  placeholder="Rainfall"
-                  onChangeText={setRainfall}
-                ></TextInput>
+              <Text style={styles.subHeading}>Expected Temperature</Text>
 
-                <Text style={styles.subHeading}>Expected Temperature</Text>
+              <TextInput
+                style={styles.textbox}
+                placeholderTextColor="grey"
+                placeholder="Temperature"
+                onChange={setTemperature}
+              ></TextInput>
 
-                <TextInput
-                  style={styles.textbox}
-                  placeholderTextColor="grey"
-                  placeholder="Temperature"
-                  onChangeText={setTemperature}
-                ></TextInput>
+              <Text style={styles.subHeading}>Expected Harvest</Text>
 
-                <Text style={styles.subHeading}>Expected Harvest</Text>
+              <TextInput
+                style={styles.textbox}
+                placeholderTextColor="grey"
+                placeholder="Expected Harvest"
+                onChange={setExpectedHarvest}
+              ></TextInput>
 
-                <TextInput
-                  style={styles.textbox}
-                  placeholderTextColor="grey"
-                  placeholder="Expected Harvest"
-                  onChangeText={setExpectedHarvest}
-                ></TextInput>
-
-                <View style={styles.buttonContainer}>
-                  <NextButton
-                    textColor="white"
-                    bgColor={darkGreen}
-                    btnLabel={"Submit"}
-                    onPress={handleSubmit}
-                  />
-                  <NextButton
-                    textColor="white"
-                    bgColor={isSubmitted ? darkGreen : "grey"}
-                    btnLabel={"Predict"}
-                    disabled={!isSubmitted}
-                    onPress={()=>handlePredict()}
-                  />
-                </View>
+              <View style={styles.buttonContainer}>
+                <NextButton
+                  textColor="white"
+                  bgColor={darkGreen}
+                  btnLabel={"Submit"}
+                  width={110}
+                  onPress={handleSubmit}
+                />
+                <NextButton
+                  textColor="white"
+                  bgColor={isSubmitted ? darkGreen : "grey"}
+                  btnLabel={"Predict"}
+                  width={110}
+                  disabled={!isSubmitted}
+                  onPress={handlePredict}
+                />
+              </View>
+              <View style= {styles.predictionCard}>
                 {predictedHarvest && (
                   <Text style={styles.predictionResult}>
                     Predicted Harvest: {predictedHarvest}
@@ -325,10 +330,11 @@ export default function ActualPrediction(props) {
               </View>
             </View>
           </View>
-        </ScrollView>
-      </View>
-      <Footer />
+        </View>
+      </ScrollView>
     </View>
+    <Footer />
+  </View>
   );
 }
 
@@ -397,14 +403,15 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   predictionCard: {
-    backgroundColor: green,
+    backgroundColor: "#ebfaeb",
     justifyContent: "center",
     borderRadius: 10,
     padding: 20,
     marginVertical: 20,
     marginLeft: 40,
     alignItems: "center",
-    width: 300,
+    width: 330,
+    height:150,
   },
   predictionText: {
     color: "white",
@@ -414,7 +421,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     paddingHorizontal: 30,
     marginTop: 20,
   },

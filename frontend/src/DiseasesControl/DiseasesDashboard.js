@@ -23,10 +23,10 @@ export default function DiseasesDashboard(props) {
       <Header />
       <View style={{ paddingBottom: 130 }}>
         <ScrollView>
-            <Image
-                source={require("./assets/DiseaseControlDashboard.gif")}
-                style={{ width: "100%", height: 190 }}
-              />
+          <Image
+            source={require("./assets/DiseaseControlDashboard.gif")}
+            style={{ width: "100%", height: 190 }}
+          />
           {/* <Image
             style={{ width: "100%", height: 220 }}
             source={require("./assets/cover2.webp")}
@@ -52,7 +52,7 @@ export default function DiseasesDashboard(props) {
                 }}
               >
                 <FontAwesome
-                  name="lightbulb-o"
+                  name="tree"
                   size={30}
                   color={"#33705b"}
                   style={{
@@ -60,7 +60,7 @@ export default function DiseasesDashboard(props) {
                   }}
                 />
                 <Text style={styles.subHedding}>
-                 Disease Identification and Control
+                  Disease Identification and Control
                 </Text>
                 <View>
                   <Text
@@ -71,11 +71,17 @@ export default function DiseasesDashboard(props) {
                       letterSpacing: -0.5,
                     }}
                   >
-                    Welcome to the Disease Dashboard of our mobile app, tailored for gherkin growers to ensure the health and productivity of your crops. Here, you can effortlessly upload pictures of gherkin leaves, whether they are healthy or potentially diseased. Once you upload an image, our advanced system will analyze it and accurately identify any diseases present, providing you with precise predictions and detailed information about the health of your plants.
+                    Welcome to the Disease Dashboard of our mobile app, tailored
+                    for gherkin growers to ensure the health and productivity of
+                    your crops. Here, you can effortlessly upload pictures of
+                    gherkin leaves, whether they are healthy or potentially
+                    diseased. Once you upload an image, our advanced system will
+                    analyze it and accurately identify any diseases present,
+                    providing you with precise predictions and detailed
+                    information about the health of your plants.
                   </Text>
                 </View>
               </View>
-              
             </View>
           </View>
 
@@ -117,29 +123,26 @@ export default function DiseasesDashboard(props) {
                     letterSpacing: -0.5,
                   }}
                 >
-                  Identify gherkin leaves by clicking the button
-                  below to open your camera and capture a clear image of the
-                  leaf. Our intelligent system will analyze the image and
-                  provide you with detailed information and effective solutions
-                  to protect your crops.
+                  Identify gherkin leaves by clicking the button below to open
+                  your camera and capture a clear image of the leaf. Our
+                  intelligent system will analyze the image and provide you with
+                  detailed information and effective solutions to protect your
+                  crops.
                 </Text>
 
-
-
                 <View style={{ paddingTop: 20 }}>
-                    <Button
-                      title="Get Start"
-                      onPress={() => {
-                        // console.log("Button pressed");
-                        navigation.navigate("PredictLeaf");
-                      }}
-                      color={"#33705b"}
-                    />
+                  <Button
+                    title="Get Start"
+                    onPress={() => {
+                      // console.log("Button pressed");
+                      navigation.navigate("PredictLeaf");
+                    }}
+                    color={"#33705b"}
+                  />
                 </View>
               </View>
-            </View> 
+            </View>
           </View>
-
 
           <View style={{ paddingTop: 30 }}>
             <View></View>
@@ -198,13 +201,15 @@ export default function DiseasesDashboard(props) {
               <Text style={styles.subHedding}>The system identified categories</Text>
               <Text style={styles.alignSelf}>Detect the gherkin leaves firstly using object detection. If not do not allow to continue further process</Text>
             </View> */}
-             <View style={{ justifyContent: "center" }}>
-              <Text style={styles.subHedding}>The system identified categories</Text>
+            <View style={{ justifyContent: "center" }}>
+              <Text style={styles.subHedding}>
+                The system identified categories
+              </Text>
             </View>
 
             <View style={styles.imageGridContainer1}>
               <View style={styles.imageGridRow}>
-              <View>
+                <View>
                   <Image
                     source={require("./assets/gherkinLeaf.jpg")}
                     style={{
@@ -220,7 +225,6 @@ export default function DiseasesDashboard(props) {
             </View>
           </View>
 
-
           <View style={{ paddingTop: 6 }}>
             {/* <View style={{ justifyContent: "center" }}>
               <Text style={styles.subHedding}>Second step: Identify the disease</Text>
@@ -228,7 +232,7 @@ export default function DiseasesDashboard(props) {
 
             <View style={styles.imageGridContainer1}>
               <View style={styles.imageGridRow}>
-              <View>
+                <View>
                   <Image
                     source={require("./assets/FreshLeaf.png")}
                     style={{
@@ -351,8 +355,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
-
 
 // import {
 //   StyleSheet,

@@ -30,6 +30,7 @@ import Svg, {
   Stop,
 } from "react-native-svg";
 import SpiderWeb from "./animations/SpiderWeb"; // Adjust the path as needed
+import * as Speech from "expo-speech";
 
 export default function PestAnswer() {
   const route = useRoute();
@@ -48,6 +49,8 @@ export default function PestAnswer() {
 
   const [chemical, setChemical] = useState([]);
   const navigation = useNavigation();
+
+
 
   let answerGemini = data.res.recommendations.replace(/\*/g, "");
   answerGemini = answerGemini.replace(/\s{2,}/g, " ");
@@ -76,6 +79,38 @@ export default function PestAnswer() {
       answerGemini.slice(closestPeriodIndex + 1);
   }
 
+ let answerGeminiTrans = data.res.trans.replace(/\*/g, "");
+  answerGeminiTrans = answerGeminiTrans.replace(/\s{2,}/g, " ");
+  // Breaking into two paragraphs after "Best Practices to Prevent Mite Infestations"
+  // Find all periods (.) in the text and their indexes
+  const periodIndexes1 = [...answerGeminiTrans.matchAll(/\./g)].map(
+    (match) => match.index
+  );
+
+  // Check if there are any periods found
+  if (periodIndexes1.length > 0) {
+    // Calculate the middle index of the text
+    const middleIndex1 = Math.floor(answerGeminiTrans.length / 2);
+
+    // Find the period closest to the middle of the text
+    const closestPeriodIndex = periodIndexes1.reduce((prev, curr) => {
+      return Math.abs(curr - middleIndex1) < Math.abs(prev - middleIndex1)
+        ? curr
+        : prev;
+    });
+
+    // Split the text at the closest period index and add a line break
+    answerGeminiTrans =
+      answerGeminiTrans.slice(0, closestPeriodIndex + 1) +
+      "\n\n" +
+      answerGeminiTrans.slice(closestPeriodIndex + 1);
+  }
+
+
+
+  const speak = (msg) => {
+    Speech.speak(msg);
+  };
 
   const openGitHubPage = (obj) => {
     if (obj == "Aphids") {
@@ -118,7 +153,6 @@ export default function PestAnswer() {
         )
       );
       if (data.res.inception_prediction.predicted_class === "Catterpillar") {
-        console.log("come");
         setPestNames("Catepillars");
         axios
           .get(`http://192.168.1.4:5000/pest/chemical/Catepillars`)
@@ -390,11 +424,36 @@ export default function PestAnswer() {
                           uri: `http://192.168.1.4:5000/chemical_images/${c.chemical_image}`,
                         }}
                       />
+
+                      <View style={{ width: "50%", alignSelf: "center", padding:20 }}>
+                        <TouchableOpacity
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "#00a550", // optional: add a background color
+                            padding: 10,
+                            borderRadius: 5,
+                          }}
+                          onPress={() => speak(c.avoid)}
+                        >
+                          <FontAwesome name="play" size={24} color="white" />
+                          <Text
+                            style={{
+                              marginLeft: 10,
+                              color: "white",
+                              fontSize: 16,
+                            }}
+                          >
+                            Speak
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   ))}
                 </View>
 
-                <View style={{ paddingBottom: 10, paddingTop: 60 }}>
+                <View style={{ paddingBottom: 10, paddingTop: 30 }}>
                   <View>
                     <View
                       style={{
@@ -429,6 +488,69 @@ export default function PestAnswer() {
                       >
                         {answerGemini}
                       </Text>
+                    </View>
+                  </View>
+                </View>
+
+                <View style={{ paddingBottom: 40, paddingTop: 10 }}>
+                  <View>
+                    <View
+                      style={{
+                        height: "auto",
+                        alignSelf: "center",
+                        width: "80%",
+                        paddingTop: 10,
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <FontAwesome
+                        name="language"
+                        size={30}
+                        color={"#33705b"}
+                        style={{
+                          padding: 10,
+                        }}
+                      />
+
+                      <Text style={styles.subHedding1}>
+                        AI Generator Translated Answer for {pest_names}
+                      </Text>
+
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          textAlign: "justify",
+                          letterSpacing: -0.5,
+                          paddingVertical: 10,
+                        }}
+                      >
+                        {answerGeminiTrans}
+                      </Text>
+                      <View style={{ width: "100%", alignSelf: "center"}}>
+                        <TouchableOpacity
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "#00a550", // optional: add a background color
+                            padding: 10,
+                            borderRadius: 5,
+                          }}
+                          onPress={() => speak(answerGeminiTrans)}
+                        >
+                          <FontAwesome name="play" size={24} color="white" />
+                          <Text
+                            style={{
+                              marginLeft: 10,
+                              color: "white",
+                              fontSize: 16,
+                            }}
+                          >
+                            Speak
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
                 </View>

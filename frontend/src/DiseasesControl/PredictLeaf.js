@@ -35,7 +35,7 @@ export default function PredictLeaf(props) {
 
           <Image
             source={require("./assets/Gherkin Leaf Detection2.gif")}
-            style={{ width: "100%", height: 160 }}
+            style={{ width: "100%", height: 120 }}
           />
           <View
             style={{
@@ -54,8 +54,7 @@ export default function PredictLeaf(props) {
               </Text> */}
 
             <Text style={styles.subHeading}>
-              To detect the Gherkin leaves, you need to insert the clear image
-              of leaves...
+            To detect gherkin leaves, you need to provide a clear image of the leaves. This image should be of high quality, capturing the details and characteristics of the gherkin leaves to ensure accurate detection. A well-lit, focused photograph will allow the detection system to better analyze and identify the leaves, improving the accuracy of the results. Proper image quality is crucial for effective detection and classification, so ensure that the image is free from blurriness and distortion, and that it clearly shows the features of the gherkin leaves.
             </Text>
 
             <View style={{ paddingTop: 20 }}>
@@ -66,7 +65,7 @@ export default function PredictLeaf(props) {
               />
             </View>
 
-            <View style={{ paddingTop: 20 }}>
+            {/* <View style={{ paddingTop: 20 }}>
               <Button
                 title="Upload Image"
                 onPress={() => navigation.navigate("Reject")}
@@ -83,7 +82,7 @@ export default function PredictLeaf(props) {
                 }}
                 color={"#33705b"}
               />
-            </View>
+            </View> */}
           </View>
         </ScrollView>
       </View>
@@ -110,9 +109,9 @@ const styles = StyleSheet.create({
   subHeading: {
     color: "black",
     fontSize: 15,
-    padding: 10,
+    padding: 30,
     lineHeight: 25,
-    textAlign: "center",
+    textAlign: "justify",
   },
   bulletList: {
     paddingVertical: 10,

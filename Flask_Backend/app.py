@@ -21,6 +21,7 @@ import leaf_disease
 from recommender import recommender  # Import your recommender class
 from pest_recommender import pest_recommender  # Import your recommender class
 import pickle
+from deep_translator import GoogleTranslator
 
 app = Flask(__name__)
 CORS(app)
@@ -47,6 +48,10 @@ def pestPredict(mdl):
     model = YOLO('pest_model.pt')
     pred_value = model.predict(mdl, save=True)
     return pred_value
+
+def translate_text(text):
+    translator = GoogleTranslator(source='en', target='si')
+    return translator.translate(text)
 
 @app.route("/user/signup", methods=['POST'])
 def detect_object():
@@ -156,6 +161,7 @@ def mytest():
     # print(yolo_prediction)
     # Get recommendations
     recommendations = recommender_instance.getRecommendations(yolo_prediction)
+    trans = translate_text(recommendations)
 
 
     inception_prediction = {
@@ -167,7 +173,8 @@ def mytest():
         'yolo_prediction': yolo_prediction,
         'inception_prediction': inception_prediction,
         'image_name': file.filename,
-        'recommendations':recommendations
+        'recommendations':recommendations,
+        'trans':trans
     }
 
     if predicted_class == class_id:
@@ -519,13 +526,16 @@ def predict_leaf_disease():
     # Get recommendations
     recommendations = recommender_instance.getRecommendations(disease_name, temperature, humidity)
 
+    trans = translate_text(recommendations)
+
     # Get severity
     severity = recommender_instance.getSeverity(disease_name, upload_path)
 
     # Return the results
     response = {
         'recommendations': recommendations,
-        'severity': severity
+        'severity': severity,
+        'trans':trans
     }
 
     return jsonify(response)
@@ -541,10 +551,13 @@ def pest_ai_recommender():
 
     # Get recommendations
     recommendations = recommender_instance.getRecommendations(pest_name)
+    trans = translate_text(recommendations)
+
 
     # Return the results
     response = {
-        'recommendations': recommendations
+        'recommendations': recommendations,
+        'trans':trans
     }
 
     return jsonify(response)
