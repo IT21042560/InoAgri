@@ -89,9 +89,13 @@ export default function OpenCamara(props) {
           navigation.navigate("PestAnswer", {res: responseData,  imageUri: photo.uri})
         } else {
           Alert.alert("Error", "Failed to upload photo");
+          setClickButton(false)
+          navigation.navigate("PestDashboard")
         }
       } catch (error) {
         Alert.alert("Error", `An error occurred: ${error.message}`);
+        setClickButton(false)
+        navigation.navigate("PestDashboard")
       }
     }
   };

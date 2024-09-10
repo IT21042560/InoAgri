@@ -157,7 +157,7 @@ const AddCost = () => {
                     fontWeight: "bold",
                   }}
                 >
-                  ADD
+                  Predict
                 </Text>
               </TouchableOpacity>
               

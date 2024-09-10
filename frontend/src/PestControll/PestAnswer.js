@@ -402,8 +402,8 @@ export default function PestAnswer() {
                   {/* <Text style={styles.subHedding}>Aviod {chemical[0].chemical_image}</Text> */}
                 </View>
                 <View>
-                  {chemical.map((c) => (
-                    <View style={{ paddingTop: 20 }}>
+                  {chemical.map((c, index) => (
+                    <View key={c.chemical_name || index}  style={{ paddingTop: 20 }}>
                       <Text style={styles.normalhe}>
                         Chemical Name - {c.chemical_name}
                       </Text>
