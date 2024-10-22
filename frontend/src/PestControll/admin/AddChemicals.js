@@ -98,7 +98,7 @@ export default function AddChemicals(props) {
     };
 
     axios
-      .post("http://192.168.1.102:5000/pest/chemical", ob)
+      .post("http://192.168.1.101:5000/pest/chemical", ob)
       .then((res) => {
         console.log(res.data);
       })

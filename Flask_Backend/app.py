@@ -93,6 +93,97 @@ def preprocess_image(image_path):
     img_array /= 255.  # Normalize pixel values to [0, 1]
     return img_array      
         
+# @app.route("/pest/predict", methods=['POST'])
+# def mytest():
+#     # Fetch the image
+#     file = request.files['image']
+#     # Validate the image
+#     if file.filename == '':
+#         return jsonify({'error': 'No selected file'})
+
+#     # Save user entered image
+#     save_path = './Pest_Image_Uploads'
+#     if not os.path.exists(save_path):
+#         os.makedirs(save_path)
+
+#     upload_path = os.path.join(save_path, file.filename)
+#     file.save(upload_path)
+
+#     # Save user entered image 2
+#     save_path_2 = '../frontend/pest_uploaded_images'
+#     if not os.path.exists(save_path_2):
+#         os.makedirs(save_path_2)
+
+#     upload_path_2 = os.path.join(save_path_2, file.filename)
+#     file.save(upload_path_2)
+
+#     # ----Yolov8 object detection-----
+#     # Load yolo model
+#     model = YOLO("pest_model.pt")
+#     # Load input image
+#     results = model.predict(upload_path)
+#     # Get the result
+#     result = results[0]
+#     len(result.boxes)
+#     box = result.boxes[0]
+#     cords = box.xyxy[0].tolist()
+#     class_id = result.names[box.cls[0].item()]
+#     conf = round(box.conf[0].item(), 2)
+
+#     if class_id == "Thirps":
+#         class_id = "Thrips"
+
+#     yolo_prediction = {
+#         'object_type': class_id,
+#         'probability': conf
+#     }
+
+#     # -------Inception V8 computer vision---------
+#     # Load your custom Keras model
+#     model_path = './pest_classify_model.h5'
+#     model = load_model(model_path)
+#     # Create the label names
+#     class_names = ['Apids', 'Catterpillar', 'Leaf miner', 'Mites', 'Thrips', 'Whiteflies']
+#     # Preprocess the image
+#     preprocessed_image = preprocess_image(upload_path)
+#     # Make prediction
+#     prediction = model.predict(preprocessed_image)
+#     # Get probabilities
+#     predicted_class_index = np.argmax(prediction)
+#     predicted_class = class_names[predicted_class_index]
+#     probability = round(prediction[0][predicted_class_index] * 100, 2)  # Converting to percentage for consistency with YOLO
+
+#     if predicted_class == "Apids":
+#         predicted_class = "Aphids"
+
+#      # Create an instance of your recommender class
+#     recommender_instance = pest_recommender()
+#     # print(yolo_prediction)
+#     # Get recommendations
+#     recommendations = recommender_instance.getRecommendations(yolo_prediction)
+#     trans = translate_text(recommendations)
+
+
+#     inception_prediction = {
+#         'predicted_class': predicted_class,
+#         'probability': probability
+#     }
+
+#     response = {
+#         'yolo_prediction': yolo_prediction,
+#         'inception_prediction': inception_prediction,
+#         'image_name': file.filename,
+#         'recommendations':recommendations,
+#         'trans':trans
+#     }
+
+#     if predicted_class == class_id:
+#         response['message'] = True
+#     else:
+#         response['message'] = False
+#     # print(response)
+#     return jsonify(response)
+
 @app.route("/pest/predict", methods=['POST'])
 def mytest():
     # Fetch the image
@@ -101,7 +192,7 @@ def mytest():
     if file.filename == '':
         return jsonify({'error': 'No selected file'})
 
-    # Save user entered image
+    # Save user-entered image
     save_path = './Pest_Image_Uploads'
     if not os.path.exists(save_path):
         os.makedirs(save_path)
@@ -109,7 +200,7 @@ def mytest():
     upload_path = os.path.join(save_path, file.filename)
     file.save(upload_path)
 
-    # Save user entered image 2
+    # Save user-entered image 2
     save_path_2 = '../frontend/pest_uploaded_images'
     if not os.path.exists(save_path_2):
         os.makedirs(save_path_2)
@@ -117,71 +208,82 @@ def mytest():
     upload_path_2 = os.path.join(save_path_2, file.filename)
     file.save(upload_path_2)
 
-    # ----Yolov8 object detection-----
-    # Load yolo model
-    model = YOLO("pest_model.pt")
+    # ----YOLOv8 Object Detection-----
+    # Load YOLO model
+    yolo_model = YOLO("pest_model.pt")
     # Load input image
-    results = model.predict(upload_path)
+    results = yolo_model.predict(upload_path)
     # Get the result
     result = results[0]
-    len(result.boxes)
     box = result.boxes[0]
     cords = box.xyxy[0].tolist()
-    class_id = result.names[box.cls[0].item()]
-    conf = round(box.conf[0].item(), 2)
+    yolo_class_id = result.names[box.cls[0].item()]
+    yolo_conf = round(box.conf[0].item() * 100, 2)  # Confidence in percentage
 
-    if class_id == "Thirps":
-        class_id = "Thrips"
+    if yolo_class_id == "Thirps":
+        yolo_class_id = "Thrips"
 
     yolo_prediction = {
-        'object_type': class_id,
-        'probability': conf
+        'object_type': yolo_class_id,
+        'probability': yolo_conf
     }
 
-    # -------Inception V8 computer vision---------
+    # -------Inception V3 Image Classification---------
     # Load your custom Keras model
-    model_path = './pest_classify_model.h5'
-    model = load_model(model_path)
+    inception_model_path = './pest_classify_model.h5'
+    inception_model = load_model(inception_model_path)
     # Create the label names
     class_names = ['Apids', 'Catterpillar', 'Leaf miner', 'Mites', 'Thrips', 'Whiteflies']
     # Preprocess the image
     preprocessed_image = preprocess_image(upload_path)
     # Make prediction
-    prediction = model.predict(preprocessed_image)
+    inception_prediction = inception_model.predict(preprocessed_image)
     # Get probabilities
-    predicted_class_index = np.argmax(prediction)
-    predicted_class = class_names[predicted_class_index]
-    probability = round(prediction[0][predicted_class_index] * 100, 2)  # Converting to percentage for consistency with YOLO
+    inception_class_index = np.argmax(inception_prediction)
+    inception_class = class_names[inception_class_index]
+    inception_conf = round(inception_prediction[0][inception_class_index] * 100, 2)  # Confidence in percentage
 
-    if predicted_class == "Apids":
-        predicted_class = "Aphids"
+    if inception_class == "Apids":
+        inception_class = "Aphids"
 
-     # Create an instance of your recommender class
+    inception_prediction_result = {
+        'predicted_class': inception_class,
+        'probability': inception_conf
+    }
+
+    # ----Ensemble Learning: Weighted Average----
+    # Define the weights for YOLOv8 and Inception V3
+    yolo_weight = 0.6  # You can adjust the weight based on model performance
+    inception_weight = 0.4  # You can adjust the weight based on model performance
+
+    # Normalize probabilities (if necessary) and calculate weighted average
+    combined_confidence = (yolo_conf * yolo_weight + inception_conf * inception_weight) / (yolo_weight + inception_weight)
+
+    # Final decision: Choose the class with higher combined confidence
+    if yolo_class_id == inception_class:
+        final_class = yolo_class_id
+    else:
+        # Choose the class with the higher probability
+        final_class = yolo_class_id if yolo_conf >= inception_conf else inception_class
+
+    # Create an instance of your recommender class
     recommender_instance = pest_recommender()
-    # print(yolo_prediction)
     # Get recommendations
     recommendations = recommender_instance.getRecommendations(yolo_prediction)
     trans = translate_text(recommendations)
 
-
-    inception_prediction = {
-        'predicted_class': predicted_class,
-        'probability': probability
-    }
-
+    # Construct the final response
     response = {
         'yolo_prediction': yolo_prediction,
-        'inception_prediction': inception_prediction,
+        'inception_prediction': inception_prediction_result,
+        'final_class': final_class,
+        'combined_confidence': round(combined_confidence, 2),
         'image_name': file.filename,
-        'recommendations':recommendations,
-        'trans':trans
+        'recommendations': recommendations,
+        'trans': trans
     }
+    print(response)
 
-    if predicted_class == class_id:
-        response['message'] = True
-    else:
-        response['message'] = False
-    # print(response)
     return jsonify(response)
 
 

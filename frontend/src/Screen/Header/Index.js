@@ -16,7 +16,7 @@ export default function Header() {
         alignItems: "center",
       }}
     >
-    <TouchableOpacity onPress={() => navigation.navigate("LandingPage")}>
+    <TouchableOpacity onPress={() => navigation.navigate("Home")}>
       <Image
         source={require("../../LoginAndSignup/assets/hjs_logo.png")}
         style={{ width: 35, height: 35, marginLeft: 25 }}

@@ -26,6 +26,7 @@ import HarvestDashboard from "./src/HarvestPredict/HarvestDashboard";
 import PredictHarvest from "./src/HarvestPredict/PredictHarvest";
 import NextButton from "./src/HarvestPredict/NextButton";
 import ActualPrediction from "./src/HarvestPredict/ActualPrediction";
+import MyBarChart from "./src/CostPrediction/BarChartAnalysis";
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +56,7 @@ export default function AppNav() {
           <Stack.Screen name="AddCost" component={AddCost} />
           <Stack.Screen name="PredictedCost" component={PredictedCost} />
           <Stack.Screen name="CostDashboard" component={CostDashboard} />
+          <Stack.Screen name="BarChart" component={MyBarChart} />
 
           {/* Disease Control */}
           <Stack.Screen

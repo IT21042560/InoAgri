@@ -25,7 +25,7 @@ const Home = (props) => {
       }}
     >
       <Header />
-     
+      <Text style={styles.subHeading}>Home</Text>
       <Footer />
     </View>
   );
@@ -51,6 +51,14 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
   },
+  subHeading: {
+    textAlign: "center",
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "#061f1e",
+    paddingBottom: 20,
+    paddingTop: 30,
+},
 });
 
 export default Home;

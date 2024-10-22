@@ -33,7 +33,8 @@ const AddCost = () => {
     axios.post('http://192.168.1.4:5000/predict/cost',ob).then((res)=>{
         console.log(res.data)
         navigation.navigate("PredictedCost", {
-           result:res.data
+           result:res.data,
+           area:area
           });
     }).catch((err)=>{
         console.log(err)
