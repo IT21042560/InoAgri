@@ -50,8 +50,6 @@ export default function PestAnswer() {
   const [chemical, setChemical] = useState([]);
   const navigation = useNavigation();
 
-
-
   let answerGemini = data.res.recommendations.replace(/\*/g, "");
   answerGemini = answerGemini.replace(/\s{2,}/g, " ");
   // Breaking into two paragraphs after "Best Practices to Prevent Mite Infestations"
@@ -79,7 +77,7 @@ export default function PestAnswer() {
       answerGemini.slice(closestPeriodIndex + 1);
   }
 
- let answerGeminiTrans = data.res.trans.replace(/\*/g, "");
+  let answerGeminiTrans = data.res.trans.replace(/\*/g, "");
   answerGeminiTrans = answerGeminiTrans.replace(/\s{2,}/g, " ");
   // Breaking into two paragraphs after "Best Practices to Prevent Mite Infestations"
   // Find all periods (.) in the text and their indexes
@@ -106,10 +104,12 @@ export default function PestAnswer() {
       answerGeminiTrans.slice(closestPeriodIndex + 1);
   }
 
-
-
   const speak = (msg) => {
     Speech.speak(msg);
+  };
+
+  const stopSpeech = () => {
+    Speech.stop();
   };
 
   const openGitHubPage = (obj) => {
@@ -155,7 +155,7 @@ export default function PestAnswer() {
       if (data.res.inception_prediction.predicted_class === "Catterpillar") {
         setPestNames("Catepillars");
         axios
-          .get(`http://192.168.1.4:5000/pest/chemical/Catepillars`)
+          .get(`http://192.168.1.103:5000/pest/chemical/Catepillars`)
           .then((res) => {
             setChemical(res.data);
           })
@@ -166,7 +166,7 @@ export default function PestAnswer() {
         setPestNames(data.res.inception_prediction.predicted_class);
         axios
           .get(
-            `http://192.168.1.4:5000/pest/chemical/${data.res.inception_prediction.predicted_class}`
+            `http://192.168.1.103:5000/pest/chemical/${data.res.inception_prediction.predicted_class}`
           )
           .then((res) => {
             setChemical(res.data);
@@ -192,7 +192,7 @@ export default function PestAnswer() {
         setPestNames(data.res.yolo_prediction.object_type);
         axios
           .get(
-            `http://192.168.1.4:5000/pest/chemical/${data.res.yolo_prediction.object_type}`
+            `http://192.168.1.103:5000/pest/chemical/${data.res.yolo_prediction.object_type}`
           )
           .then((res) => {
             console.log(res.data);
@@ -403,7 +403,10 @@ export default function PestAnswer() {
                 </View>
                 <View>
                   {chemical.map((c, index) => (
-                    <View key={c.chemical_name || index}  style={{ paddingTop: 20 }}>
+                    <View
+                      key={c.chemical_name || index}
+                      style={{ paddingTop: 20 }}
+                    >
                       <Text style={styles.normalhe}>
                         Chemical Name - {c.chemical_name}
                       </Text>
@@ -421,21 +424,22 @@ export default function PestAnswer() {
                           alignSelf: "center",
                         }}
                         source={{
-                          uri: `http://192.168.1.4:5000/chemical_images/${c.chemical_image}`,
+                          uri: `http://192.168.1.103:5000/chemical_images/${c.chemical_image}`,
                         }}
                       />
 
-                      <View style={{ width: "50%", alignSelf: "center", padding:20 }}>
+                      <View style={{ width: "50%", alignSelf: "center" }}>
                         <TouchableOpacity
                           style={{
                             flexDirection: "row",
                             alignItems: "center",
                             justifyContent: "center",
-                            backgroundColor: "#00a550", // optional: add a background color
+                            backgroundColor: "#00a550",
                             padding: 10,
                             borderRadius: 5,
+                            marginBottom: 10,
                           }}
-                          onPress={() => speak(c.avoid)}
+                          onPress={() => speak(answerGeminiTrans)}
                         >
                           <FontAwesome name="play" size={24} color="white" />
                           <Text
@@ -446,6 +450,29 @@ export default function PestAnswer() {
                             }}
                           >
                             Speak
+                          </Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "#ff0000",
+                            padding: 10,
+                            borderRadius: 5,
+                          }}
+                          onPress={stopSpeech}
+                        >
+                          <FontAwesome name="stop" size={24} color="white" />
+                          <Text
+                            style={{
+                              marginLeft: 10,
+                              color: "white",
+                              fontSize: 16,
+                            }}
+                          >
+                            Stop
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -527,7 +554,7 @@ export default function PestAnswer() {
                       >
                         {answerGeminiTrans}
                       </Text>
-                      <View style={{ width: "100%", alignSelf: "center"}}>
+                      <View style={{ width: "100%", alignSelf: "center" }}>
                         <TouchableOpacity
                           style={{
                             flexDirection: "row",
@@ -548,6 +575,29 @@ export default function PestAnswer() {
                             }}
                           >
                             Speak
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "#ff0000",
+                            padding: 10,
+                            borderRadius: 5,
+                            marginTop:10
+                          }}
+                          onPress={stopSpeech}
+                        >
+                          <FontAwesome name="stop" size={24} color="white" />
+                          <Text
+                            style={{
+                              marginLeft: 10,
+                              color: "white",
+                              fontSize: 16,
+                            }}
+                          >
+                            Stop
                           </Text>
                         </TouchableOpacity>
                       </View>

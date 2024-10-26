@@ -72,7 +72,7 @@ export default function OpenCamara(props) {
       });
       setClickButton(true)
       try {
-        const response = await fetch("http://192.168.1.4:5000/pest/predict", {
+        const response = await fetch("http://192.168.1.103:5000/pest/predict", {
           method: "POST",
           body: formData,
           headers: {
@@ -119,7 +119,7 @@ export default function OpenCamara(props) {
       });
       setClickButton(true)
       try {
-        const response = await fetch("http://192.168.1.4:5000/pest/predict", {
+        const response = await fetch("http://192.168.1.103:5000/pest/predict", {
           method: "POST",
           body: formData,
           headers: {

@@ -77,6 +77,25 @@ def detect_object():
         #insert_users_json = json_util.dumps(user)
         insert_user = users.insert_one(user)
         return jsonify({"message":"User Created", "user_id": str(insert_user.inserted_id)})
+    
+@app.route("/user/login", methods=['POST'])
+def userLogin():
+    if request.method == 'POST':
+        users = mongo.db.users  # Reference to the MongoDB users collection
+        data = request.json  # Get JSON data from the request
+
+        username = data.get('uEmail')
+        password = data.get('uPassword')
+
+        # Fetch the user by username and password
+        user = users.find_one({"uEmail": username, "uPassword": password})
+
+        if user:
+            # If login is successful
+            return jsonify({"message": "Login successful"}), 200
+        else:
+            return jsonify({"message": "Invalid username or password"}), 401
+
 
 @app.route("/user", methods=['GET'])
 def welcome():
